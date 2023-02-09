@@ -92,22 +92,32 @@ public class InStock implements ProductStock {
 
     @Override
     public Iterable<Product> findFirstMostExpensiveProducts(int count) {
+        if (count < 0 || count > stock.size()) {
+            throw new IllegalArgumentException();
+        }
 
-        return null;
+        return stock.stream()
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .limit(count)
+                .toList();
 
     }
 
     @Override
     public Iterable<Product> findAllByQuantity(int quantity) {
 
-        return null;
+        return stock.stream()
+                .filter(p -> p.getQuantity() == quantity)
+                .toList();
 
     }
+
+
 
     @Override
     public Iterator<Product> iterator() {
 
-        return null;
+        return stock.iterator();
 
     }
 

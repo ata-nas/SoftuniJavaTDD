@@ -116,12 +116,6 @@ public class InStockTest {
 
     }
 
-    /**
-     * findFirstByAlphabeticalOrder(int n);
-     *     case 1: return n products;
-     *     case 2: return ordered by label;
-     *     case 3: return empty collection if n out of range;
-     */
     @Test
     public void testFindFirstByAlphabeticalOrderShouldReturnNProducts() {
 

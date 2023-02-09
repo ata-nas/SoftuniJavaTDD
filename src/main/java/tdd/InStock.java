@@ -72,16 +72,21 @@ public class InStock implements ProductStock {
     }
 
     @Override
-    public Iterable<Product> findAllInRange(double lo, double hi) {
+    public Iterable<Product> findAllInPriceRange(double lo, double hi) {
 
-        return null;
+        return stock.stream()
+                .filter(p -> p.getPrice() > lo && p.getPrice() <= hi)
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .toList();
 
     }
 
     @Override
     public Iterable<Product> findAllByPrice(double price) {
 
-        return null;
+        return stock.stream()
+                .filter(p -> p.getPrice() == price)
+                .toList();
 
     }
 

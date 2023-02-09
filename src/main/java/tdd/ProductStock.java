@@ -18,7 +18,7 @@ public interface ProductStock extends Iterable<Product> {
     Iterable<Product> findFirstByAlphabeticalOrder(int count);
 
     //Querying
-    Iterable<Product> findAllInRange(double lo, double hi);
+    Iterable<Product> findAllInPriceRange(double lo, double hi);
     Iterable<Product> findAllByPrice(double price);
     Iterable<Product> findFirstMostExpensiveProducts(int count);
     Iterable<Product> findAllByQuantity(int quantity);

@@ -133,8 +133,7 @@ public class InStockTest {
     @Test
     public void testFindFirstByAlphabeticalOrderShouldReturnProductsSortedAlphabetically() {
 
-        List<Product> productList = addMultipleProductsToStock()
-                .stream()
+        List<Product> productList = addMultipleProductsToStock().stream()
                 .sorted(Comparator.comparing(Product::getLabel))
                 .toList();
 
@@ -161,19 +160,144 @@ public class InStockTest {
 
     }
 
+    @Test
+    public void testFindFirstByAlphabeticalOrderShouldReturnEmptyCollectionIfNIsZero() {
+
+        addMultipleProductsToStock();
+
+        int numberOfItems = 0;
+
+        List<Product> actual = iterableToList(inStock.findFirstByAlphabeticalOrder(numberOfItems));
+
+        assertEquals(0, actual.size());
+
+    }
+
+    @Test
+    public void testFindFirstByAlphabeticalOrderShouldReturnEmptyCollectionIfNIsNegative() {
+
+        addMultipleProductsToStock();
+
+        int numberOfItems = -1;
+
+        List<Product> actual = iterableToList(inStock.findFirstByAlphabeticalOrder(numberOfItems));
+
+        assertEquals(0, actual.size());
+
+    }
+
+    @Test
+    public void testFindAllInPriceRangeShouldReturnAllInDescOrder() {
+
+        double lo = 1.00;
+        double hi = 5.00;
+
+        List<Product> productList = addMultipleProductsToStock().stream()
+                .filter(p -> p.getPrice() > lo && p.getPrice() <= hi)
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .toList();
+
+        List<Product> actualList = iterableToList(inStock.findAllInPriceRange(lo, hi));
+
+        assertEquals(productList.size(), actualList.size());
+
+        for (int i = 0; i < actualList.size(); i++) {
+            double expected = productList.get(i).getPrice();
+            double actual = actualList.get(i).getPrice();
+            assertEquals(expected, actual, 0.00);
+        }
+
+    }
+
+    @Test
+    public void testFindAllInPriceRangeShouldReturnAllInRangeExclusiveLowerInclusiveUpper() {
+
+        double lo = 1.00;
+        double hi = 5.00;
+
+        List<Product> productList = addMultipleProductsToStock().stream()
+                .filter(p -> p.getPrice() > lo && p.getPrice() <= hi)
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .toList();
+
+        List<Product> actualList = iterableToList(inStock.findAllInPriceRange(lo, hi));
+
+        assertEquals(productList.size(), actualList.size());
+
+        for (int i = 0; i < actualList.size(); i++) {
+            double expected = productList.get(i).getPrice();
+            double actual = actualList.get(i).getPrice();
+            assertEquals(expected, actual, 0.00);
+        }
+
+    }
+
+    @Test
+    public void testFindAllInPriceRangeShouldReturnEmptyCollectionIfNoneFound() {
+
+        double lo = 100.00;
+        double hi = 500.00;
+
+        List<Product> productList = addMultipleProductsToStock().stream()
+                .filter(p -> p.getPrice() > lo && p.getPrice() <= hi)
+                .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .toList();
+
+        List<Product> actualList = iterableToList(inStock.findAllInPriceRange(lo, hi));
+
+        assertEquals(0, actualList.size());
+
+    }
+
+    @Test
+    public void testFIndAllByPriceShouldReturnAllItemsWithGivenPrice() {
+
+        double price = 2.00;
+
+        List<Product> priceList = addMultipleProductsToStock().stream()
+                .filter(p -> p.getPrice() == price)
+                .toList();
+
+        List<Product> actualList = iterableToList(inStock.findAllByPrice(price));
+
+        assertEquals(priceList.size(), actualList.size());
+
+        for (int i = 0; i < actualList.size(); i++) {
+            double expected = priceList.get(i).getPrice();
+            double actual = actualList.get(i).getPrice();
+            assertEquals(expected, actual, 0.00);
+        }
+
+    }
+
+    @Test
+    public void testFIndAllByPriceShouldReturnEmptyCollectionIfNoneFound() {
+
+        double price = 200.00;
+
+        List<Product> priceList = addMultipleProductsToStock().stream()
+                .filter(p -> p.getPrice() == price)
+                .toList();
+
+        List<Product> actualList = iterableToList(inStock.findAllByPrice(price));
+
+        assertEquals(0, actualList.size());
+
+    }
+
     private List<Product> addMultipleProductsToStock() {
 
         List<Product> result = List.of(
-                new Product("product_7", 7, 8),
-                new Product("product_2", 4, 4),
-                new Product("product_1", 3, 3),
-                new Product("product_3", 6, 6),
-                new Product("product_0", 1, 2),
-                new Product("product_6", 4, 9),
-                new Product("product_8", 2, 3),
-                new Product("product_4", 8, 7),
-                new Product("product_5", 1, 1),
-                new Product("product_9", 9, 1)
+                new Product("product_7", 7.00, 8),
+                new Product("product_2", 4.00, 4),
+                new Product("product_1", 3.00, 3),
+                new Product("product_3", 6.00, 6),
+                new Product("product_0", 1.00, 2),
+                new Product("product_6", 4.00, 9),
+                new Product("product_8", 2.00, 3),
+                new Product("product_4", 8.00, 7),
+                new Product("product_5", 1.00, 1),
+                new Product("product_9", 9.00, 1)
         );
 
         result.forEach(inStock::add);
